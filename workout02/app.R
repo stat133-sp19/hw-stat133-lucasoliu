@@ -89,7 +89,6 @@ server <- function(input, output) {
      modalities <- data.frame(years, no_contrib, fixed_contrib, growing_contrib)
      modalities
      
-     print(input$facet)
      if (input$facet == "0") {
        p <- ggplot(data=modalities, aes(x=years, y=balance)) + geom_line(aes(y=no_contrib, colour="no_contrib")) + geom_line(aes(y=fixed_contrib, colour="fixed_contrib")) + geom_line(aes(y=growing_contrib, colour="growing_contrib")) + ggtitle("Three modes of investing") + labs(colour = "mode")
      } else {
@@ -109,6 +108,20 @@ server <- function(input, output) {
      print(p)
    })
    output$table <- renderPrint({
+     initial <- input$initial
+     annual <- input$annual
+     return <- input$return / 100
+     growth <- input$growth / 100
+     years <- 0:input$years
+     no_contrib <- c()
+     fixed_contrib <- c()
+     growing_contrib <- c()
+     for(year in years) {
+       no_contrib <- append(no_contrib, future_value(initial, return, year))
+       fixed_contrib <- append(fixed_contrib, future_value(initial, return, year) + annuity(annual, return, year))
+       growing_contrib <- append(growing_contrib, future_value(initial, return, year) + growing_annuity(annual, return, growth, year))
+     }
+     modalities <- data.frame(years, no_contrib, fixed_contrib, growing_contrib)
      modalities
    })
 }

@@ -1,0 +1,12 @@
+Package: binomial
+Type: Package
+Title: binomial functions
+Version: 0.1.0
+Author: Lucas Liu
+Maintainer: lucasoliu@berkeley.edu
+Description: contains functions used to analyze binomial distributions.
+License: stat133
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    testthat
